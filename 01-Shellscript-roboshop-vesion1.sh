@@ -19,5 +19,5 @@ do
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]' \
 	--query 'Instances[0].InstanceId' \
     --output text)
-    echo -e "${M}The new Instance-Name is: ${G}$instance ID is: ${Y}$INSTANCE_ID${N}" 
+    echo -e "${M}Instance-Name: "${G}$instance ID: ${Y}$INSTANCE_ID${N}""
 done
