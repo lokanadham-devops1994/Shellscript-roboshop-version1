@@ -22,42 +22,16 @@ validate(){
     else    
         echo -e "${2}  ${G}Successful!${N}" | tee -a $log_file
         fi
+}
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "Adding mongo.repo"
 dnf install mongodb-org -y &>> $log_file
 validate $? "Install MongoDB"
 systemctl enable mongod &>> $log_file
 systemctl start mongod &>> $log_file
-validate $? "Start & enable the MongoDB service:"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-for package in $@;
-    do
-        dnf list installed $package &>> $log_file
-        if [ $? -ne 0 ]; then
-            echo -e "${M}Going to install:${package},${G}SUCCESSFULLY!${N}"
-            dnf install $package -y &>> $log_file
-            validate $? "installaling ${package}"
-        else
-        echo -e "${M}Already installed:${package},${Y}SKIPPING!{N}"
-        fi
-    done
+validate $? "Start & enable the MongoDB service"
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+validate $? "Update remote connection to MongoDB"
+systemctl restart mongod
+validate $? "Restat MongoDB"
 echo "Script execution completed at $(date +"%F %T")" &>> $log_file
