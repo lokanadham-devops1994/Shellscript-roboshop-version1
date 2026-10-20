@@ -21,13 +21,13 @@ do
     --output text)
     echo -e "${M}Instane-Name:"${G}$instance ID:${Y}$INSTANCE_ID${N}""
     if [[ "$Instance" != "frontend" ]]; then
-        ip=$(aws ec2 describe-instances \
+        IP=$(aws ec2 describe-instances \
         --instance-ids i-031d34c1470c4cd1e \
         --query 'Reservations[*].Instances[*].PrivateIpAddress' \
         --output text)
         Route53_record="${instance}.${domain_name}"
     else
-        ip=$(aws ec2 describe-instances \
+        IP=$(aws ec2 describe-instances \
             --instance-ids i-031d34c1470c4cd1e \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
@@ -51,7 +51,7 @@ do
                 "ResourceRecords": 
                 [
                 {
-                    "Value": "'$ip'"
+                    "Value": "'$IP'"
                 }
                 ]
             }
