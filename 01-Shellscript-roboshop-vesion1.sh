@@ -1,5 +1,5 @@
 #!/bin/bash
-image_id=ami_id="ami-0eec78ea4cbaaf5bd"
+image_id: ami_id="ami-0eec78ea4cbaaf5bd"
 instance_type="t3.micro"
 domain_name="daws-92s.shop"
 hosted_zone_id="Z07721523EJLIZ4JK5SSZ"
@@ -12,7 +12,7 @@ for instance in $@;
 do
     echo -e "Create instance: ${Y}$instance${N}"
     INSTANCE_ID=$(aws ec2 run-instances \
-    --image-id $image_id \
+    --image-id $ami _id \
     --instance-type $instance_type \
     --count 1 \
     --security-groups "roboshop-common" "roboshop-mongodb" \
