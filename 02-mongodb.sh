@@ -15,14 +15,18 @@ else
 fi 
 mkdir -p "$logs_folder"
 echo "Script execution started at $(date +"%F %T")" &>> $log_file
+timestamp(){
+    date +"%F %T"
+}
 validate(){
     if [ $1 -ne 0 ]; then
-        echo -e "${2} ${R}Failed!${N}" | tee -a $log_file
+        echo -e "${Y}$(timestamp) [ERROR]${N} ${2} ${R}Failed!${N}" | tee -a $log_file
         exit 1
     else    
-        echo -e "${2}  ${G}Successful!${N}" | tee -a $log_file
+        echo -e "${Y}$(timestamp) [INFO]${N} ${2} ${G}Successful!${N}" | tee -a $log_file
         fi
 }
+echo "${timestamp} [INFO]===Script excution started====" | tee -a $log_file
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "Adding mongo.repo"
 dnf install mongodb-org -y &>> $log_file
@@ -30,8 +34,9 @@ validate $? "Install MongoDB"
 systemctl enable mongod &>> $log_file
 systemctl start mongod &>> $log_file
 validate $? "Start & enable the MongoDB service"
-sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $log_file
 validate $? "Update remote connection to MongoDB"
-systemctl restart mongod
+systemctl restart mongod &>> $log_file
 validate $? "Restat MongoDB"
+echo "${timestamp} [INFO]===Script excution completed====" | tee -a $log_file
 echo "Script execution completed at $(date +"%F %T")" &>> $log_file
