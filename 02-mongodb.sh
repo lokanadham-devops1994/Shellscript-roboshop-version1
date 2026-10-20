@@ -26,7 +26,7 @@ validate(){
         echo -e "${Y}$(timestamp) [INFO]${N} ${2} ${G}Successful!${N}" | tee -a $log_file
         fi
 }
-echo "${Y}$(timestamp) [INFO]${N}===Script excution started====" | tee -a $log_file
+echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "Adding mongo.repo"
 dnf install mongodb-org -y &>> $log_file
@@ -38,5 +38,5 @@ sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $log_file
 validate $? "Update remote connection to MongoDB"
 systemctl restart mongod &>> $log_file
 validate $? "Restat MongoDB"
-echo "${Y}$(timestamp) [INFO]${N}===Script excution completed====" | tee -a $log_file
+echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file
 echo "Script execution completed at $(date +"%F %T")" &>> $log_file
