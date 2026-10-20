@@ -10,7 +10,7 @@ M="\e[1;35m"
 N="\e[0m"
 for instance in $@;
 do
-    echo -e "${M}Create instance: ${Y}$instance${N}"
+    echo -e "${M}Create instance:${Y}$instance${N}"
     INSTANCE_ID=$(aws ec2 run-instances \
     --image-id $image_id \
     --instance-type $instance_type \
@@ -19,7 +19,7 @@ do
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
 	--query 'Instances[0].InstanceId' \
     --output text)
-    echo -e "${M}Instane-Name: "${G}$instance ID: ${Y}$INSTANCE_ID${N}""
+    echo -e "${M}Instane-Name:"${G}$instance ID:${Y}$INSTANCE_ID${N}""
     if [[ "$Instance" != "frontend" ]]; then
         ip=$(aws ec2 describe-instances \
         --instance-ids i-031d34c1470c4cd1e \
@@ -34,6 +34,7 @@ do
             Route53_record="$domain_name"
     fi
     # Update Route 53 Record
+    echo -e "${M}Record:${G}$Route53_record${N}"
     aws route53 change-resource-record-sets \
     --hosted-zone-id $hosted_zone_id \
     --change-batch '{
@@ -57,5 +58,5 @@ do
             }
         ]
     }'
-    echo -e  "${M}Route 53 record updated for ${Y}$instance${N}"
+    echo -e  "${M}Route53 record updated for ${Y}$instance${N}"
 done
