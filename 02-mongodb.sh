@@ -38,5 +38,6 @@ sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $log_file
 validate $? "Update remote connection to MongoDB"
 systemctl restart mongod &>> $log_file
 validate $? "Restat MongoDB"
+echo "$(timestamp) [INFO]===Script excution to take time $seconds====" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file
 echo "Script execution completed at $(date +"%F %T")" &>> $log_file
