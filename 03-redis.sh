@@ -28,7 +28,6 @@ validate(){
 }
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
 dnf module disable redis -y &>> $log_file
-validate $? "Module disable redis:Defasult Version 6 in Redis"
 dnf module enable redis:7 -y &>> $log_file
 validate $? "Module disable redis:Enable Version 7 in Redis"
 dnf install redis -y &>> $log_file
