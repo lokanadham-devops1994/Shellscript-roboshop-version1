@@ -20,7 +20,7 @@ do
 	--query 'Instances[0].InstanceId' \
     --output text)
     echo -e "${M}Instane-Name: "${G}$instance ID: ${Y}$INSTANCE_ID${N}""
-    if [$Instance -ne frontend];then
+    if [[ "$Instance" != "frontend" ]]; then
         ip=$(aws ec2 describe-instances \
         --instance-ids i-031d34c1470c4cd1e \
         --query 'Reservations[*].Instances[*].PrivateIpAddress' \
