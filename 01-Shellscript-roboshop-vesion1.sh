@@ -10,14 +10,14 @@ M="\e[1;35m"
 N="\e[0m"
 for instance in $@;
 do
-    echo -e "{M}Create instance: ${Y}$instance${N}"
+    echo -e "${M}Create instance: ${Y}$instance${N}"
     INSTANCE_ID=$(aws ec2 run-instances \
-    --image-id $image_id=ami_id \
+    --image-id $image_id \
     --instance-type $instance_type \
     --count 1 \
     --security-groups "roboshop-common" "roboshop-mongodb" \
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]' \
 	--query 'Instances[0].InstanceId' \
     --output text)
-    echo -e "${M}The new instance ID is: {Y}$INSTANCE_ID${N}" 
+    echo -e "${M}The new instance ID is: ${Y}$INSTANCE_ID${N}" 
 done
