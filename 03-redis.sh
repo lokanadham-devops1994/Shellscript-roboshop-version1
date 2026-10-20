@@ -29,7 +29,6 @@ validate(){
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
 dnf module disable redis -y &>> $log_file
 dnf module enable redis:7 -y &>> $log_file
-validate $? "Module disable redis:Enable Version 7 in Redis"
 dnf install redis -y &>> $log_file
 validate $? "Installing Redis" 
 sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf &>> $log_file
