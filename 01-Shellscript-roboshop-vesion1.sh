@@ -12,7 +12,7 @@ for instance in $@;
 do
     echo -e "Create instance: ${Y}$instance${N}"
     INSTANCE_ID=$(aws ec2 run-instances \
-    --image-id $image_id=ami_id \
+    --image-id $image_id \
     --instance-type $instance_type \
     --count 1 \
     --security-groups "roboshop-common" "roboshop-mongodb" \
