@@ -20,4 +20,42 @@ do
 	--query 'Instances[0].InstanceId' \
     --output text)
     echo -e "${M}Instane-Name: "${G}$instance ID: ${Y}$INSTANCE_ID${N}""
+    if [$Instance -ne frontend];then
+        ip=$(aws ec2 describe-instances \
+        --instance-ids i-031d34c1470c4cd1e \
+        --query 'Reservations[*].Instances[*].PrivateIpAddress' \
+        --output text)
+        Route53_record="$instance.$domain_name"
+    else
+        ip=$(aws ec2 describe-instances \
+            --instance-ids i-031d34c1470c4cd1e \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
+            Route53_record="$domain_name"
+    fi
+    # Update Route 53 Record
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $hosted_zone_id \
+    --change-batch '{
+        "Comment": "Updating A record value",
+        "Changes": 
+        [
+            {
+            "Action": "UPSERT",
+            "ResourceRecordSet": 
+            {
+                "Name": "'$Route53_record'",
+                "Type": "A",
+                "TTL": 1,
+                "ResourceRecords": 
+                [
+                {
+                    "Value": "'$ip'"
+                }
+                ]
+            }
+            }
+        ]
+    }'
+    echo -e  "${M}Route 53 record updated for ${Y}$instance${N}"
 done
