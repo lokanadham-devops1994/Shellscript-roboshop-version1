@@ -25,13 +25,13 @@ do
         --instance-ids i-031d34c1470c4cd1e \
         --query 'Reservations[*].Instances[*].PrivateIpAddress' \
         --output text)
-        Route53_record="$instance.$domain_name"
+        Route53_record="${instance}.${domain_name}"
     else
         ip=$(aws ec2 describe-instances \
             --instance-ids i-031d34c1470c4cd1e \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
-            Route53_record="$domain_name"
+            Route53_record="${domain_name}"
     fi
     # Update Route 53 Record
     echo -e "${M}Record:${G}$Route53_record${N}"
