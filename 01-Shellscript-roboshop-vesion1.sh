@@ -22,13 +22,13 @@ do
     echo -e "${M}Instane-Name:"${G}$instance ID:${Y}$INSTANCE_ID${N}""
     if [[ "$Instance" != "frontend" ]]; then
         IP=$(aws ec2 describe-instances \
-        --instance-ids i-031d34c1470c4cd1e \
+        --instance-ids $INSTANCE_ID \
         --query 'Reservations[*].Instances[*].PrivateIpAddress' \
         --output text)
         Route53_record="${instance}.${domain_name}"
     else
         IP=$(aws ec2 describe-instances \
-            --instance-ids i-031d34c1470c4cd1e \
+            --instance-ids $INSTANCE_ID \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
             Route53_record="${domain_name}"
