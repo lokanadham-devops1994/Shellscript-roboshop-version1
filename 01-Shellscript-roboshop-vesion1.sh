@@ -16,8 +16,8 @@ do
     --instance-type $instance_type \
     --count 1 \
     --security-groups "roboshop-common" "roboshop-mongodb" \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]' \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
 	--query 'Instances[0].InstanceId' \
     --output text)
-    echo -e "${G}$instance ID: ${Y}$INSTANCE_ID${N}"
+    echo -e "${M}Instane-Name: "${G}$instance ID: ${Y}$INSTANCE_ID${N}""
 done
