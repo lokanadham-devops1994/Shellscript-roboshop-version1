@@ -20,15 +20,17 @@ timestamp(){
 }
 validate(){
     if [ $1 -ne 0 ]; then
-        echo -e "${Y}$(timestamp) [ERROR]${N} ${2} ${R}Failed!${N}" | tee -a $log_file
+        echo -e "${Y}$(timestamp) [ERROR]${N}${2} ${R}Failed!${N}" | tee -a $log_file
         exit 1
     else    
-        echo -e "${Y}$(timestamp) [INFO]${N} ${2}  ${G}Successful!${N}" | tee -a $log_file
+        echo -e "${Y}$(timestamp) [INFO]${N}${2}  ${G}Successful!${N}" | tee -a $log_file
         fi
 }
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
 dnf module disable redis -y &>> $log_file
-dnf module enable redis:7 -y &>> $log_file
+validate $? "Module disable redis:Defasult Version 6 in Redis"
+dnf module enable redis:7 -y &>> $log_file 
+validate $? "Module disable redis:Enable Version 7 in Redis"
 dnf install redis -y &>> $log_file
 validate $? "Installing Redis" 
 sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf &>> $log_file
