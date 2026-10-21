@@ -27,14 +27,14 @@ validate(){
         fi
 }
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
-dnf module disable redis -y
-dnf module enable redis:7 -y
-dnf install redis -y
+dnf module disable redis -y &>> $log_file
+dnf module enable redis:7 -y &>> $log_file
+dnf install redis -y &>> $log_file
 validate $? "Installing Redis" 
-sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf
+sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf &>> $log_file
 validate $? "Update remote connection to Redis"
-systemctl enable redis
-systemctl start redis
+systemctl enable redis &>> $log_file
+systemctl start redis &>> $log_file
 validate $? "Enable and Start Redis Server"
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file
