@@ -24,7 +24,7 @@ validate(){
         exit 0
     else    
         echo -e "${Y}$(timestamp) [INFO]${N} ${2}  ${G}Successful!${N}" | tee -a $log_file
-        fi
+    fi
 }
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
 cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
@@ -34,8 +34,13 @@ validate $? "Install RabbitMQ"
 systemctl enable rabbitmq-server &>> $log_file
 systemctl start rabbitmq-server &>> $log_file
 validate $? "Start & enable the RabbitMQ server"
-rabbitmqctl add_user roboshop roboshop123 &>> $log_file
-validate $? "creating  Rabbitmq user for Roboshop"
+rabbitmqctl list_users | grep -qw "my_user"
+if[ $? -ne 0 ];then
+    rabbitmqctl add_user roboshop roboshop123 &>> $log_file
+    validate $? "creating  Rabbitmq user for Roboshop"
+else
+    echo -e "${Y}$(timestamp) [INFO]${N} Rabbitmq user is already exist...${Y}SKIPPING${N}"
+fi
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $log_file
 validate $? "Set permission for Rabbitmq user for Roboshop"
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
