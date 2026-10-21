@@ -60,13 +60,18 @@ if command -v restorecon &> /dev/null; then
     restorecon -v /etc/systemd/system/catalogue.service
 fi
 systemctl daemon-reload &>> $log_file
-validate $? "Daemon rfeload"
-systemctl enable catalogue &>> $log_file
-systemctl start catalogue &>> $log_file
-validate $? "Start & Enable catalogue"
+validate $? "Daemon reload"
+systemctl enable catalogue.service &>> "$log_file"
+validate $? "Enabling catalogue.service"
+systemctl start catalogue.service &>> "$log_file"
+validate $? "Starting catalogue.service"
+# 5. MongoDB repo and client installation
 cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
 validate $? "Creating mongo.repo"
-dnf install mongodb-mongosh -y &>> $log_file
+dnf install -y mongodb-mongosh &>> "$log_file"
 validate $? "Installing mongodb client server"
+
+
+
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file 
