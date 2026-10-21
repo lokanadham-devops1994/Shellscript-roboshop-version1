@@ -61,6 +61,8 @@ if command -v restorecon &> /dev/null; then
 fi
 systemctl daemon-reload &>> $log_file
 validate $? "Daemon reload"
+systemctl unmask catalogue.service
+validate $? "Unmask the services"
 systemctl enable catalogue.service &>> "$log_file"
 validate $? "Enabling catalogue.service"
 systemctl start catalogue.service &>> "$log_file"
