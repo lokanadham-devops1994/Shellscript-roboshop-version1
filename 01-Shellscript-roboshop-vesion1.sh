@@ -8,7 +8,7 @@ G="\e[1;32m"
 Y="\e[1;33m"
 M="\e[1;35m"
 N="\e[0m"
-for instance in $@;
+for instance in $@
 do
     echo -e "${M}Create instance:${Y}$instance${N}"
     INSTANCE_ID=$(aws ec2 run-instances \
