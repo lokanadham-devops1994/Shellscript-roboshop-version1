@@ -60,7 +60,5 @@ validate $? "Creating mongo.repo"
 dnf install mongodb-mongosh -y
 validate $? "Installing mongodb client server"
 
-
-
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file 
