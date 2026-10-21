@@ -2,6 +2,7 @@
 user_id=$(id -u)
 logs_folder="/var/log/shellscript-Practice"
 log_file="${logs_folder}/${0}.log"
+domain_name="daws-92s.shop"
 R="\e[1;31m"
 G="\e[1;32m"
 Y="\e[1;33m"
@@ -36,7 +37,26 @@ if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
     validate $? "Creating roboshop system user for roboshop catalogue"
 else
-    echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING${N}"
+    echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING!${N}"
 fi
+mkdir -p /app
+validate $? "Create app directory in roboshop catalogue"
+curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
+validate $? "Downloading roboshop catalogue zip file from web"
+cd /app
+unzip /tmp/catalogue.zip &>> $log_file
+validate $? "Extracting catalogue unzip file"
+npm install &>> $log_file
+validate $? "Installing dependecies"
+sed -i "s/DOMAIN_NAME/$domain_name" catalogue.service
+cp catalogue.service /etc/systemd/system/catalogue.service
+systemctl daemon-reload &>> $log_file
+systemctl enable catalogue &>> $log_file
+systemctl start catalogue &>> $log_file
+validate $? "Start & Enable catalogue"
+
+
+
+
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file 
