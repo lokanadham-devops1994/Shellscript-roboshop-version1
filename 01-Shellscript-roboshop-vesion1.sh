@@ -10,8 +10,6 @@ G="\e[1;32m"
 Y="\e[1;33m"
 M="\e[1;35m"
 N="\e[0m"
-# List of instances to create (Add your instance names inside the parentheses)
-istance=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
 for instance in $@
 do
     echo -e "${M}Create instance:${Y}$instance${N}"
