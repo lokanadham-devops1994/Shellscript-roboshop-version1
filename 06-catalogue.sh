@@ -59,7 +59,7 @@ systemctl start catalogue &>> $log_file
 validate $? "Start & Enable catalogue"
 cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
 validate $? "Creating mongo.repo"
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y &>> $log_file
 validate $? "Installing mongodb client server"
 
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
