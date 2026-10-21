@@ -1,6 +1,6 @@
 #!/bin/bash
 user_id=$(id -u)
-logs_folder="/var/log/shellscript-Practice"
+logs_folder="/var/log/roboshop"
 log_file="${logs_folder}/${0}.log"
 domain_name="daws-92s.shop"
 script_dir=$(dirname "$(realpath "$0")")
