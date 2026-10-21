@@ -29,7 +29,7 @@ validate(){
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
 cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
 validate $? "Adding rabbitmq.repo"
-dnf install erlang rabbitmq-server -y  &>> $log_file
+dnf install erlang rabbitmq-server -y &>> $log_file
 validate $? "Install RabbitMQ"
 systemctl enable rabbitmq-server &>> $log_file
 systemctl start rabbitmq-server &>> $log_file
