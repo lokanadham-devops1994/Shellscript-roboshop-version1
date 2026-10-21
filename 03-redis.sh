@@ -35,6 +35,6 @@ sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-
 validate $? "Update remote connection to Redis"
 systemctl enable redis &>> $log_file
 systemctl start redis &>> $log_file
-validate $? "Enable and Start Redis Server"
+validate $? "Start & Enable Redis Server"
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file

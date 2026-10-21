@@ -32,7 +32,7 @@ dnf install mysql-server -y &>> $log_file
 validat $? "Installing MYSQL Sever"
 systemctl enable mysqld &>> $log_file
 systemctl start mysqld &>> $log_file
-validat $? "Enable and Start MYSQL"
+validat $? "Start & Enable MYSQL server"
 mysql_secure_installation --set-root-pass Roboshop@1 &>> $log_file
 validate $? "Setup MYSQL root password"
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
