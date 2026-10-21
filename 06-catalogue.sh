@@ -40,6 +40,8 @@ if [ $? -ne 0 ]; then
 else
     echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING!${N}"
 fi
+rm -r /app
+validate $? "Removing old code in /app directory"
 mkdir -p /app
 validate $? "Create app directory in roboshop catalogue"
 curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
