@@ -39,4 +39,4 @@ else
     echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING${N}"
 fi
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
-echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file $? "Cre
+echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file 
