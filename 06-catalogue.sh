@@ -51,7 +51,7 @@ unzip /tmp/catalogue.zip &>> $log_file
 validate $? "Extracting catalogue unzip file"
 npm install &>> $log_file
 validate $? "Installing dependecies"
-sed -i "s/DOMAIN_NAME/$domain_name" "$script_dir/catalogue.service"
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/catalogue.service"
 cp catalogue.service /etc/systemd/system/catalogue.service
 systemctl daemon-reload &>> $log_file
 systemctl enable catalogue &>> $log_file
