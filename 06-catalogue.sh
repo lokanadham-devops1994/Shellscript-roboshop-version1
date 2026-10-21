@@ -55,7 +55,10 @@ systemctl daemon-reload &>> $log_file
 systemctl enable catalogue &>> $log_file
 systemctl start catalogue &>> $log_file
 validate $? "Start & Enable catalogue"
-
+cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
+validate $? "Creating mongo.repo"
+dnf install mongodb-mongosh -y
+validate $? "Installing mongodb client server"
 
 
 
