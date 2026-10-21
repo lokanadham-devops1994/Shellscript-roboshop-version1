@@ -1,6 +1,6 @@
 #!/bin/bash
 user_id=$(id -u)
-logs_folder="/var/log/shellscript-Practice"
+logs_folder="/var/log/roboshop"
 log_file="${logs_folder}/${0}.log"
 R="\e[1;31m"
 G="\e[1;32m"
