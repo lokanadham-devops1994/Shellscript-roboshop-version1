@@ -34,12 +34,12 @@ validate $? "Install RabbitMQ"
 systemctl enable rabbitmq-server &>> $log_file
 systemctl start rabbitmq-server &>> $log_file
 validate $? "Start & enable the RabbitMQ server"
-rabbitmqctl list_users | grep -qw "my_user"
+rabbitmqctl list_users | grep -qw "roboshop"
 if [ $? -ne 0 ]; then
     rabbitmqctl add_user roboshop roboshop123 &>> $log_file
     validate $? "creating  Rabbitmq user for Roboshop"
 else
-    echo -e "${Y}$(timestamp) [INFO]${N} Rabbitmq user is already exist...${Y}SKIPPING${N}"
+    echo -e "${Y}$(timestamp) [INFO]${N} Rabbitmq user is already exist....${Y}SKIPPING${N}"
 fi
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $log_file
 validate $? "Set permission for Rabbitmq user for Roboshop"
