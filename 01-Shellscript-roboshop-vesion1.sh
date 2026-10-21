@@ -12,13 +12,14 @@ for instance in $@;
 do
     echo -e "${M}Create instance:${Y}$instance${N}"
     INSTANCE_ID=$(aws ec2 run-instances \
-    --image-id $image_id \
-    --instance-type $instance_type \
-    --count 1 \
-    --security-groups "{(roboshop-common) (roboshop-$intance)}" \
-    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
-	--query 'Instances[0].InstanceId' \
-    --output text)
+        --image-id $image_id \
+        --instance-type $instance_type \
+        --count 1 \
+        --security-groups "roboshop-common" "roboshop-"$intance"" \
+        --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
+        --query 'Instances[0].InstanceId' \
+        --output text
+    )
     echo -e "${M}Instane-Name:"${G}$instance ID:${Y}$INSTANCE_ID${N}""
     if [[ "$Instance" != "frontend" ]]; then
         IP=$(aws ec2 describe-instances \
