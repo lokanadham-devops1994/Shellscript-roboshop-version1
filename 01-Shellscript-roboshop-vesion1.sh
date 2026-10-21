@@ -4,9 +4,6 @@ image_id="ami-0055977a6e828a4f4"
 instance_type="t3.micro"
 domain_name="daws-92s.shop"
 hosted_zone_id="Z07721523EJLIZ4JK5SSZ"
-# logs folder creation
-logs_folder="/var/log/shellscript-Practice"
-log_file="${logs_folder}/${0}.log"
 # Color Codes
 R="\e[1;31m"
 G="\e[1;32m"
@@ -17,7 +14,7 @@ N="\e[0m"
 timestamp(){
     date +"%F %T"
 }
-echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
+echo "${M}$(timestamp)${N} ${Y}Script excution started{N}" 
 # Condition loop exection
 for instance in $@;
 do
@@ -71,6 +68,6 @@ INSTANCE_ID=$(aws ec2 run-instances \
             ]
         }'
     echo -e  "${M}Route53 record updated for ${Y}$instance${N}"
-echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
-echo "$(timestamp) [INFO]===Script excution Completed====" | tee -a $log_file
+echo "${M}$(timestamp)${N} ${Y}Script excution to take time "$SECONDS" in seconds${N}"
+echo "${M}$(timestamp)${N} ${Y}Script excution Completed${N}"
 done
