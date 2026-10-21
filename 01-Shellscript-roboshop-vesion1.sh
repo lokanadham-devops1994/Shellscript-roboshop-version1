@@ -15,7 +15,7 @@ do
         --image-id $image_id \
         --instance-type $instance_type \
         --count 1 \
-        --security-groups "[{roboshop-common} {roboshop-$intance}]" \
+        --security-groups "roboshop-common" "roboshop-${instance}" \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
         --query 'Instances[0].InstanceId' \
         --output text)
