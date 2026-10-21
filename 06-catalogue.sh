@@ -27,11 +27,11 @@ validate(){
     fi
 }
 echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
-dnf module disable nodejs -y
-dnf module enable nodejs:24 -y
-dnf install nodejs -y
+dnf module disable nodejs -y &>> $log_file
+dnf module enable nodejs:24 -y &>> $log_file
+dnf install nodejs -y &>> $log_file
 validate $? "Installing nodjs 24"
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
 validate $? "Creating roboshop system user"
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file
