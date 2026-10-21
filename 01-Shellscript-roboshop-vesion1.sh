@@ -15,11 +15,10 @@ do
         --image-id $image_id \
         --instance-type $instance_type \
         --count 1 \
-        --security-groups "roboshop-common" "roboshop-"$intance"" \
+        --security-groups "[{roboshop-common} {roboshop-$intance}]" \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
         --query 'Instances[0].InstanceId' \
-        --output text
-    )
+        --output text)
     echo -e "${M}Instane-Name:"${G}$instance ID:${Y}$INSTANCE_ID${N}""
     if [[ "$Instance" != "frontend" ]]; then
         IP=$(aws ec2 describe-instances \
