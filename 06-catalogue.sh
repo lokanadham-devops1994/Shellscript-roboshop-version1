@@ -3,6 +3,7 @@ user_id=$(id -u)
 logs_folder="/var/log/shellscript-Practice"
 log_file="${logs_folder}/${0}.log"
 domain_name="daws-92s.shop"
+script_dir=$(dirname "$(realpath "$0")")
 R="\e[1;31m"
 G="\e[1;32m"
 Y="\e[1;33m"
@@ -48,7 +49,7 @@ unzip /tmp/catalogue.zip &>> $log_file
 validate $? "Extracting catalogue unzip file"
 npm install &>> $log_file
 validate $? "Installing dependecies"
-sed -i "s/DOMAIN_NAME/$domain_name" catalogue.service
+sed -i "s/DOMAIN_NAME/$domain_name" "$script_dir/catalogue.service"
 cp catalogue.service /etc/systemd/system/catalogue.service
 systemctl daemon-reload &>> $log_file
 systemctl enable catalogue &>> $log_file
