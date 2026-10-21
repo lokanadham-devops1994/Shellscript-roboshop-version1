@@ -35,7 +35,7 @@ systemctl enable rabbitmq-server &>> $log_file
 systemctl start rabbitmq-server &>> $log_file
 validate $? "Start & enable the RabbitMQ server"
 rabbitmqctl list_users | grep -qw "my_user"
-if[ $? -ne 0 ];then
+if [ $? -ne 0 ];then
     rabbitmqctl add_user roboshop roboshop123 &>> $log_file
     validate $? "creating  Rabbitmq user for Roboshop"
 else
