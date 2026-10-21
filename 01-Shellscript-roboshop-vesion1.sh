@@ -1,13 +1,17 @@
 #!/bin/bash
+# Configuration Variables
 image_id="ami-0055977a6e828a4f4"
 instance_type="t3.micro"
 domain_name="daws-92s.shop"
 hosted_zone_id="Z07721523EJLIZ4JK5SSZ"
+# Color Codes
 R="\e[1;31m"
 G="\e[1;32m"
 Y="\e[1;33m"
 M="\e[1;35m"
 N="\e[0m"
+# List of instances to create (Add your instance names inside the parentheses)
+istance=$instance=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
 for instance in $@
 do
     echo -e "${M}Create instance:${Y}$instance${N}"
