@@ -52,8 +52,15 @@ validate $? "Extracting catalogue unzip file"
 npm install &>> $log_file
 validate $? "Installing dependecies"
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/catalogue.service"
-cp catalogue.service /etc/systemd/system/catalogue.service
+validate $? "Replacing DOMAIN_NAME in catalogue service"
+cp "$script_dir/catalogue.service" /etc/systemd/system/catalogue.service
+validate $? "Copying catalogue.service to /etc/systemmd/system/"
+# Fix SEL inux context if SEL inux is enforcing (RHEL/CentOS/DNF Systems)
+if command -v restorecon &> /dev/null; then
+    restorecon -v /etc/systemd/system/catalogue.service
+fi
 systemctl daemon-reload &>> $log_file
+validate $? "Daemon rfeload"
 systemctl enable catalogue &>> $log_file
 systemctl start catalogue &>> $log_file
 validate $? "Start & Enable catalogue"
