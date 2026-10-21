@@ -4,16 +4,26 @@ image_id="ami-0055977a6e828a4f4"
 instance_type="t3.micro"
 domain_name="daws-92s.shop"
 hosted_zone_id="Z07721523EJLIZ4JK5SSZ"
+# logs folder creation
+logs_folder="/var/log/shellscript-Practice"
+log_file="${logs_folder}/${0}.log"
 # Color Codes
 R="\e[1;31m"
 G="\e[1;32m"
 Y="\e[1;33m"
 M="\e[1;35m"
 N="\e[0m"
-for instance in $@
+# timestamp idenfication for shellscript
+timestamp(){
+    date +"%F %T"
+}
+echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
+# Condition loop exection
+for instance in $@;
 do
     echo -e "${M}Create instance:${Y}$instance${N}"
-    INSTANCE_ID=$(aws ec2 run-instances \
+# EC2 instance Creation
+INSTANCE_ID=$(aws ec2 run-instances \
         --image-id $image_id \
         --instance-type $instance_type \
         --count 1 \
@@ -38,27 +48,29 @@ do
     # Update Route 53 Record
     echo -e "${M}Record:${G}$Route53_record${N}"
     aws route53 change-resource-record-sets \
-    --hosted-zone-id $hosted_zone_id \
-    --change-batch '{
-        "Comment": "Updating A record value",
-        "Changes": 
-        [
-            {
-            "Action": "UPSERT",
-            "ResourceRecordSet": 
-            {
-                "Name": "'$Route53_record'",
-                "Type": "A",
-                "TTL": 1,
-                "ResourceRecords": 
-                [
+        --hosted-zone-id $hosted_zone_id \
+        --change-batch '{
+            "Comment": "Updating A record value",
+            "Changes": 
+            [
                 {
-                    "Value": "'$IP'"
+                "Action": "UPSERT",
+                "ResourceRecordSet": 
+                {
+                    "Name": "'$Route53_record'",
+                    "Type": "A",
+                    "TTL": 1,
+                    "ResourceRecords": 
+                    [
+                    {
+                        "Value": "'$IP'"
+                    }
+                    ]
                 }
-                ]
-            }
-            }
-        ]
-    }'
+                }
+            ]
+        }'
     echo -e  "${M}Route53 record updated for ${Y}$instance${N}"
+echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
+echo "$(timestamp) [INFO]===Script excution Completed====" | tee -a $log_file
 done
