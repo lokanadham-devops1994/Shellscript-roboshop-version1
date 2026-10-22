@@ -51,5 +51,15 @@ unzip /tmp/catalogue.zip &>> $log_file
 validate $? "Extracting catalogue unzip file"
 npm install &>> $log_file
 validate $? "Installing dependecies"
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/catalogue.service"
+validate $? "Replacing DOMAIN_NAME in catalogue service"
+cp "$script_dir/catalogue.service" /etc/systemd/system/catalogue.service
+validate $? "Copying catalogue.service to /etc/systemmd/system/"
+systemctl daemon-reload &>> $log_file
+validate $? "Daemon reload"
+systemctl enable catalogue.service &>> "$log_file"
+validate $? "Enabling catalogue.service"
+systemctl start catalogue.service &>> "$log_file"
+validate $? "Starting catalogue.service"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
