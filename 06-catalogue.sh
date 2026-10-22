@@ -40,5 +40,16 @@ if [ $? -nq 0 ]; then
 else
     echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING!${N}"
 fi
+rm -rf /app
+validate $? "Removing old code in /app directory"
+mkdir -p /app
+validate $? "Create app directory in roboshop catalogue"
+curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
+validate $? "Downloading roboshop catalogue zip file from web"
+cd /app
+unzip /tmp/catalogue.zip &>> $log_file
+validate $? "Extracting catalogue unzip file"
+npm install &>> $log_file
+validate $? "Installing dependecies"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
