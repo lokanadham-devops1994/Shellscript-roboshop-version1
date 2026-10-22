@@ -33,7 +33,12 @@ dnf module disable nodejs -y &>> $log_file
 dnf module enable nodejs:24 -y &>> $log_file
 dnf install nodejs -y &>> $log_file
 validate $? "Installing nodjs 24"
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
-validate $? "Creating roboshop system user for roboshop catalogue"
+id roboshop
+if [ $? -nq 0 ]; then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
+    validate $? "Creating roboshop system user for roboshop catalogue"
+else
+    echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING!${N}"
+fi
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
