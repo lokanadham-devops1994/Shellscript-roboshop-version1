@@ -33,41 +33,7 @@ dnf module disable nodejs -y &>> $log_file
 dnf module enable nodejs:24 -y &>> $log_file
 dnf install nodejs -y &>> $log_file
 validate $? "Installing nodjs 24"
-id roboshop &>> $log_file
-if [ $? -ne 0 ]; then
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
-    validate $? "Creating roboshop system user for roboshop catalogue"
-else
-    echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING!${N}"
-fi
-rm -r /app
-validate $? "Removing old code in /app directory"
-mkdir -p /app
-validate $? "Create app directory in roboshop catalogue"
-curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
-validate $? "Downloading roboshop catalogue zip file from web"
-cd /app
-unzip /tmp/catalogue.zip &>> $log_file
-validate $? "Extracting catalogue unzip file"
-npm install &>> $log_file
-validate $? "Installing dependecies"
-sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/catalogue.service"
-validate $? "Replacing DOMAIN_NAME in catalogue service"
-cp "$script_dir/catalogue.service" /etc/systemd/system/catalogue.service
-validate $? "Copying catalogue.service to /etc/systemmd/system/"
-systemctl daemon-reload &>> $log_file
-validate $? "Daemon reload"
-systemctl enable catalogue.service &>> "$log_file"
-validate $? "Enabling catalogue.service"
-systemctl start catalogue.service &>> "$log_file"
-validate $? "Starting catalogue.service"
-# 5. MongoDB repo and client installation
-cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
-validate $? "Creating mongo.repo"
-dnf install -y mongodb-mongosh &>> "$log_file"
-validate $? "Installing mongodb client server"
-
-
-
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
+validate $? "Creating roboshop system user for roboshop catalogue"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
