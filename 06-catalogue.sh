@@ -16,7 +16,7 @@ else
     echo "You are running this script as root user with sudo acess,you can be accessed successfully."
 fi 
 mkdir -p "$logs_folder"
-echo "Script execution started at $(date +"%F %T")" &>> $log_file
+echo -e "${M}Script execution started at $(date +"%F %T")${N}" &>> $log_file
 timestamp(){
     date +"%F %T"
 }
@@ -28,7 +28,7 @@ validate(){
         echo -e "${Y}$(timestamp) [INFO]${N} ${2}  ${G}Successful!${N}" | tee -a $log_file
     fi
 }
-echo "$(timestamp) [INFO]===Script excution started====" | tee -a $log_file
+echo -e "${M}$(timestamp) [INFO]===Script excution started====${N}" | tee -a $log_file
 dnf module disable nodejs -y &>> $log_file
 dnf module enable nodejs:24 -y &>> $log_file
 dnf install nodejs -y &>> $log_file
@@ -69,5 +69,5 @@ validate $? "Installing mongodb client server"
 
 
 
-echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
-echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file 
+echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
+echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
