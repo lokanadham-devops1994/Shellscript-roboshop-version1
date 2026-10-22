@@ -14,7 +14,7 @@ N="\e[0m"
 timestamp(){
     date +"%F %T"
 }
-echo "${M}$(timestamp)${N} ${Y}Script excution started{N}" 
+echo -e "${M}$(timestamp)${N} ${Y}Script excution started ${N}" 
 # Condition loop exection
 for instance in $@;
 do
@@ -68,6 +68,6 @@ INSTANCE_ID=$(aws ec2 run-instances \
             ]
         }'
     echo -e  "${M}Route53 record updated for ${Y}$instance${N}"
-echo "${M}$(timestamp)${N} ${Y}Script excution to take time "$SECONDS" in seconds${N}"
-echo "${M}$(timestamp)${N} ${Y}Script excution Completed${N}"
+echo -e "${M} $(timestamp)${N} ${Y}Script excution to take time "$SECONDS" in seconds${N}"
+echo -e "${M} $(timestamp)${N} ${Y}Script excution Completed${N}"
 done
