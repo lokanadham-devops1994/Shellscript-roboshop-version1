@@ -61,5 +61,9 @@ systemctl enable catalogue.service &>> "$log_file"
 validate $? "Enabling catalogue.service"
 systemctl start catalogue.service &>> "$log_file"
 validate $? "Starting catalogue.service"
+cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
+validate $? "Creating mongo.repo"
+dnf install -y mongodb-mongosh &>> "$log_file"
+validate $? "Installing mongodb client server"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
