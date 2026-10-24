@@ -32,6 +32,41 @@ echo -e "${M}$(timestamp) [INFO]===Script excution started====${N}" | tee -a $lo
 dnf module enable maven:3.9 -y &>> $log_file
 dnf install maven java-25-openjdk-devel -y &>> $log_file
 validate $? "Installing Maven & Java"
+alternatives --set java "/usr/lib/jvm/java-25-openjdk/bin/java"
+validate S? "Setting Java 25 as default Java version"
+echo "export JAVA_HOME=$(dirname $(dirname $(readlink -f /usr/bin/java)))" > /etc/profile.d/java.sh
+source /etc/profile.d/java.sh
+echo $JAVA_HOME
+validate $? "Setting JAVA_HOME for Maven"
+id roboshop &>> $log_file
+if [ $? -ne 0 ]; then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
+    validate $? "Creating roboshop system user for roboshop shipping"
+else
+    echo -e "${Y}$(timestamp) [INFO]${N} roboshop sysem user is already exist....${Y}SKIPPING!${N}"
+fi
+rm -rf /app
+validate $? "Removing old code in /app directory"
+mkdir -p /app
+validate $? "Create app directory in roboshop shipping"
+curl -L -o /tmp/shipping.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/shipping-v4.zip &>> $log_file
+validate $? "Downloading roboshop shipping zip file from web"
+cd /app
+unzip /tmp/shipping.zip &>> $log_file
+validate $? "Extracting shipping unzip file"
+mvn clean package &>> $log_file
+validate $? "Installing dependecies"
+mv target/shipping.jar shipping.jar
+validate $? "Moving shipping.jar file"
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service"
+validate $? "Replacing DOMAIN_NAME in shipping service"
+dnf install mysql -y &>> $log_file
+validate $? "Installing MySQL client"
+
+systemctl daemon-reload &>> $logs_file
+systemctl enable shipping &>> $logs_file
+systemctl restart shipping
+validate $? "Restarting/Starting shipping"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
 
