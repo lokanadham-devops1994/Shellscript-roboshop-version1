@@ -62,11 +62,13 @@ sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service"
 validate $? "Replacing DOMAIN_NAME in shipping service"
 dnf install mysql -y &>> $log_file
 validate $? "Installing MySQL client"
+systemctl daemon-reload &>> $log_file
+validate $? "Daemon reload"
+systemctl enable shipping.service &>> $log_file
+validate $? "Enabling shipping.service"
+systemctl start shipping.service &>> $log_file
+validate $? "Starting shipping.service"
 
-systemctl daemon-reload &>> $logs_file
-systemctl enable shipping &>> $logs_file
-systemctl restart shipping
-validate $? "Restarting/Starting shipping"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
 
