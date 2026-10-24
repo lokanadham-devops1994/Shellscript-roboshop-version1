@@ -53,7 +53,7 @@ sed -i "s/DOMAIN_NAME/$domain_name/g" "$scripts_dir/roboshop.conf"
 cp "$scripts_dir/roboshop.conf" /etc/nginx/default.d/roboshop.conf
 validate $? "Copied roboshop config"
 
-nginx -t &>> $logs_file
+nginx -t 
 validate $? "Nginx Configuration"
 
 systemctl restart nginx
