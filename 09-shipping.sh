@@ -70,6 +70,8 @@ systemctl enable shipping.service &>> $log_file
 validate $? "Enabling shipping.service"
 systemctl start shipping.service &>> $log_file
 validate $? "Starting shipping.service"
+mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
+validate $? "Loading shipping data"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
 
