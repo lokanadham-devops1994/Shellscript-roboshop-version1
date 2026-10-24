@@ -78,4 +78,4 @@ fi
 systemctl restart catalogue
 validate $? "Restarting Catalogue"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
-echo -e "${M}$(timestamp) [INFO]===Script excution completed====${N}" | tee -a $log_file 
+echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
