@@ -32,5 +32,6 @@ echo -e "${M}$(timestamp) [INFO]===Script excution started====${N}" | tee -a $lo
 dnf module enable maven:3.9 -y &>> $log_file
 dnf install maven java-25-openjdk-devel -y &>> $log_file
 validate $? "Installing Maven & Java"
-
+echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
+echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
 
