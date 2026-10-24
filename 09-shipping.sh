@@ -60,6 +60,8 @@ mv target/shipping.jar shipping.jar
 validate $? "Moving shipping.jar file"
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service"
 validate $? "Replacing DOMAIN_NAME in shipping service"
+cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service
+validate $? "Copying shipping.service to /etc/systemmd/system/"
 dnf install mysql -y &>> $log_file
 validate $? "Installing MySQL client"
 systemctl daemon-reload &>> $log_file
@@ -68,7 +70,6 @@ systemctl enable shipping.service &>> $log_file
 validate $? "Enabling shipping.service"
 systemctl start shipping.service &>> $log_file
 validate $? "Starting shipping.service"
-
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
 
