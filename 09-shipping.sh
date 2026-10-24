@@ -64,12 +64,6 @@ cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service
 validate $? "Copying shipping.service to /etc/systemmd/system/"
 dnf install mysql -y &>> $log_file
 validate $? "Installing MySQL client"
-systemctl daemon-reload &>> $log_file
-validate $? "Daemon reload"
-systemctl enable shipping.service &>> $log_file
-validate $? "Enabling shipping.service"
-systemctl start shipping.service &>> $log_file
-validate $? "Starting shipping.service"
 count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file )
 if [ -z "$count" ] || [ "$count" -eq 0 ]; then
     mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
@@ -79,6 +73,14 @@ else
 fi
 mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
 validate $? "Creating APP user"
+systemctl daemon-reload &>> $log_file
+validate $? "Daemon reload"
+systemctl enable shipping.service &>> $log_file
+validate $? "Enabling shipping.service"
+systemctl start shipping.service &>> $log_file
+validate $? "Starting shipping.service"
+systemctl restart shipping.service &>> $log_file
+validate $? "Restarting/Starting shipping.service"
 echo -e "${M}$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds${N}" | tee -a $log_file
 echo -e "${M}$(timestamp) [INFO] ==== Script completed Execution =====${N}" | tee -a $logs_file
 
