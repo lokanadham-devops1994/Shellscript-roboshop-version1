@@ -33,3 +33,4 @@ dnf module enable maven:3.9 -y &>> $log_file
 dnf install maven java-25-openjdk-devel -y &>> $log_file
 validate $? "Installing Maven & Java"
 
+
