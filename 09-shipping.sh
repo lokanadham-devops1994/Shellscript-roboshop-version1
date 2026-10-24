@@ -70,7 +70,7 @@ systemctl enable shipping.service &>> $log_file
 validate $? "Enabling shipping.service"
 systemctl start shipping.service &>> $log_file
 validate $? "Starting shipping.service"
-count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;" 2> $logs_file)
+count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;" 2)
 if [ -z "$count" ] || [ "$count" -eq 0 ]; then
     mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
     validate $? "Loading shipping data"
