@@ -65,9 +65,10 @@ cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
 validate $? "Creating mongo.repo"
 dnf install -y mongodb-mongosh &>> $log_file
 validate $? "Installing mongodb client server"
-product_count=$(mongosh --host "mongodb.$domain_name" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()' 2>> $log_file)
-validate $? "Connecting to MongoDB"
-if [ "$product_count" -eq 0 ]; then
+
+# product_count=$(mongosh --host "mongodb.$domain_name" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()' 2>> $log_file)
+# validate $? "Connecting to MongoDB"
+# if [ "$product_count" -eq 0 ]; then
 
     mongosh --host "mongodb.$domain_name" </app/db/master-data.js &>> $log_file
     validate $? "Loading products"
