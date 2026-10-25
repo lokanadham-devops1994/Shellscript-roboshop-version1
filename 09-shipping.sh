@@ -67,8 +67,9 @@ validate $? "Installing MySQL client"
 
 # count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file )
 # if [ -z "$count" ] || [ "$count" -eq 0 ]; then
-    # mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
-    # validate $? "Loading shipping data"
+
+    mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
+    validate $? "Loading shipping data"
 
 # else
 #   already loaded...${Y}SKIPPING${N}"  echo -e "$(timestamp) [INFO] Master data 
