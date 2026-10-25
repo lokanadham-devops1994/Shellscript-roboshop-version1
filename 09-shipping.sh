@@ -65,18 +65,18 @@ validate $? "Copying shipping.service to /etc/systemmd/system/"
 dnf install mysql -y &>> $log_file
 validate $? "Installing MySQL client"
 
-# count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file )
-# if [ -z "$count" ] || [ "$count" -eq 0 ]; then
+count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file )
+if [ -z "$count" ] || [ "$count" -eq 0 ]; then
 
     mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
     validate $?"Loading shipping data"
 
-# else
-#   already loaded...${Y}SKIPPING${N}"  echo -e "$(timestamp) [INFO] Master data 
-# fi
+else
+  already loaded...${Y}SKIPPING${N}"  echo -e "$(timestamp) [INFO] Master data 
+fi
 
-# mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
-# validate $? "Creating APP user"
+mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
+validate $? "Creating APP user"
 systemctl daemon-reload &>> $log_file
 validate $? "Daemon reload"
 systemctl enable shipping.service &>> $log_file
