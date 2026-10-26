@@ -34,7 +34,7 @@ systemctl enable mysqld &>> $log_file
 validate $? "Enable MYSQL server"
 systemctl start mysqld &>> $log_file
 validate $? "Start MYSQL server"
-mysql_secure_installation --set-root-pass Roboshop@1 &>> $log_file
+mysql_secure_installation --set-root-pass RoboShop@1 &>> $log_file
 validate $? "Setup MYSQL root password"
 echo "$(timestamp) [INFO] Script excution to take time "$SECONDS" in seconds" | tee -a $log_file
 echo "$(timestamp) [INFO]===Script excution completed====" | tee -a $log_file
